@@ -10832,10 +10832,24 @@ if (v1 == true) then
 			return total
 		end)
 
+
+		function getItemInstanceBuy(vale)
+			local e = workspace:FindFirstChild('ItemsOnSale')
+			if not vale then return end
+			if not e then return end
+			local psr = e:FindFirstChild(vale)
+
+			if not psr then return end
+
+			CFrameTP(psr.PrimaryPart.CFrame)
+			return InvokeServer("attemptPurchase", vale);			
+		end
+
 		buyItem = LPH_NO_VIRTUALIZE(function(item)
 			local itemD = ItemCheck();
 			if (item and not itemD[table.find(itemD, item)] and (CanPurchase(item) == true) and (getTotalSlotsUsed() < 32)) then
-				return InvokeServer("attemptPurchase", item);
+				getItemInstanceBuy(item)
+				
 			end
 			return false
 		end)
@@ -15924,7 +15938,7 @@ if (v1 == true) then
 		end
 
 		HPOT.SetListeners('CASH_WATCH',workspace.Game.Entities.CashBundle)
-		HPOT.SetListeners('LunarNewYear',workspace.LunarNewYear)
+		-- HPOT.SetListeners('LunarNewYear',workspace.LunarNewYear)
 
 
 		function GetCash()
@@ -16392,65 +16406,65 @@ if (v1 == true) then
 			hlwList()
 		end
 
-		indexUIObj("cash", "seasonalFarm", z001.cash:Toggle({Title="lunar new year farm",Value=WindUI.saveDataSettings.Get("LunarNewYear"),Icon="check",Type="Toggle",isPaidFunction=true,Callback=function(h)
-			if (z001.cash.seasonalFarm ~= nil) then
-				WindUI.saveDataSettings:LoadDataIf("LunarNewYear", h);
-			end
-			getgenv().seasonalFarm = h
-			while getgenv().seasonalFarm == true do task.wait(.3)
-				if isnotalreadyfarming() then
-				local oldpos = farmmodes == 'regular' and playerHumanoidRootPart.CFrame or CFrame.new(1653.3216552734375, -16.953155517578125, -529.6856079101562);
-					local oh= (function()
-						local a = {}
-						for l,v in next,workspace.LunarNewYear:GetChildren() do 
-							local lantern = v:FindFirstChild("Lantern") 
-							local ready = lantern and lantern.Transparency == 0
+		-- indexUIObj("cash", "seasonalFarm", z001.cash:Toggle({Title="lunar new year farm",Value=WindUI.saveDataSettings.Get("LunarNewYear"),Icon="check",Type="Toggle",isPaidFunction=true,Callback=function(h)
+		-- 	if (z001.cash.seasonalFarm ~= nil) then
+		-- 		WindUI.saveDataSettings:LoadDataIf("LunarNewYear", h);
+		-- 	end
+		-- 	getgenv().seasonalFarm = h
+		-- 	while getgenv().seasonalFarm == true do task.wait(.3)
+		-- 		if isnotalreadyfarming() then
+		-- 		local oldpos = farmmodes == 'regular' and playerHumanoidRootPart.CFrame or CFrame.new(1653.3216552734375, -16.953155517578125, -529.6856079101562);
+		-- 			local oh= (function()
+		-- 				local a = {}
+		-- 				for l,v in next,workspace.LunarNewYear:GetChildren() do 
+		-- 					local lantern = v:FindFirstChild("Lantern") 
+		-- 					local ready = lantern and lantern.Transparency == 0
 
-							if ready then
-								table.insert(a,v)
-							end
-						end
-						return a
-					end)()
-					if #oh > 0  then
-						local cahindex = math.random(#oh)
-						local v = oh[cahindex]
-						local e,f
-						local Part =  v.PrimaryPart
-						local lantern = v:FindFirstChild("Lantern") 
-						local ready = lantern and lantern.Transparency == 0						
-						if isnotalreadyfarming() and atmFarming ~= true and Part and ready and playerHumanoidRootPart then
-							local cashtime = 200
-							while e ~= false and seasonalFarm and lantern.Transparency == 0 and v.PrimaryPart do task.wait()
-								e,f = pcall(function()
-									getgenv().seasonalFarming = true
-									cashtime = cashtime - .7
-									CFrameTP(v.WorldPivot)
-									removeForceField()
-									local pr = findProximityPrompt(v)
-									if pr ~= nil then
-										fireproximityprompt(pr)
-									end
-									--cashpickup()
-									delCashIf(cashtime,v)
-								end)
-                            end
-							checkforerror(e,v084('warn'),f,v084('getinfo')(2,'nl'));
+		-- 					if ready then
+		-- 						table.insert(a,v)
+		-- 					end
+		-- 				end
+		-- 				return a
+		-- 			end)()
+		-- 			if #oh > 0  then
+		-- 				local cahindex = math.random(#oh)
+		-- 				local v = oh[cahindex]
+		-- 				local e,f
+		-- 				local Part =  v.PrimaryPart
+		-- 				local lantern = v:FindFirstChild("Lantern") 
+		-- 				local ready = lantern and lantern.Transparency == 0						
+		-- 				if isnotalreadyfarming() and atmFarming ~= true and Part and ready and playerHumanoidRootPart then
+		-- 					local cashtime = 200
+		-- 					while e ~= false and seasonalFarm and lantern.Transparency == 0 and v.PrimaryPart do task.wait()
+		-- 						e,f = pcall(function()
+		-- 							getgenv().seasonalFarming = true
+		-- 							cashtime = cashtime - .7
+		-- 							CFrameTP(v.WorldPivot)
+		-- 							removeForceField()
+		-- 							local pr = findProximityPrompt(v)
+		-- 							if pr ~= nil then
+		-- 								fireproximityprompt(pr)
+		-- 							end
+		-- 							--cashpickup()
+		-- 							delCashIf(cashtime,v)
+		-- 						end)
+        --                     end
+		-- 					checkforerror(e,v084('warn'),f,v084('getinfo')(2,'nl'));
 
-							--until isReady ~= true or isFarmingSafe == true or CashFarm == false or not v.PrimaryPart or e == false --or bankFarm == true and getBankCash() > 0 or atmFarm and atmFarming == true
-							CFrameTP(oldpos)
-							task.wait()
+		-- 					--until isReady ~= true or isFarmingSafe == true or CashFarm == false or not v.PrimaryPart or e == false --or bankFarm == true and getBankCash() > 0 or atmFarm and atmFarming == true
+		-- 					CFrameTP(oldpos)
+		-- 					task.wait()
 						
-							SetHumanoidEnabled(lp,true)								
-							task.delay(farmingDelay,function()
-								getgenv().seasonalFarming = false						
-							end)
+		-- 					SetHumanoidEnabled(lp,true)								
+		-- 					task.delay(farmingDelay,function()
+		-- 						getgenv().seasonalFarming = false						
+		-- 					end)
 
-						end
-					end
-				end
-			end
-		end}));		
+		-- 				end
+		-- 			end
+		-- 		end
+		-- 	end
+		-- end}));		
 		-- indexUIObj("cash", "autoCases", z001.cash:Toggle({Title="halloween cases farm",Value=WindUI.saveDataSettings.Get("casesFarm"),Icon="check",Type="Toggle",isPaidFunction=true,Callback=function(h)
 		-- 	if (z001.cash.autoCases ~= nil) then
 		-- 		WindUI.saveDataSettings:LoadDataIf("casesFarm", h);
